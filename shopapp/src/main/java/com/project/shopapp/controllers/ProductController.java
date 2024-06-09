@@ -115,7 +115,7 @@ public class ProductController {
         // Thêm thư viện UUID vào trước file để đảm bảo tên file là duy nhất
         String uniqueFilename = UUID.randomUUID().toString() + "_" + filename;
         // Đường dẫn đến thuw mục muốn lưu file
-        java.nio.file.Path uploadDir = Paths.get("uploads");
+        java.nio.file.Path uploadDir = Paths.get("shopapp/uploads");
         // Kiểm tra và tạo thư mục nếu nó tồn tại
         if (!Files.exists(uploadDir)) {
             Files.createDirectories(uploadDir);

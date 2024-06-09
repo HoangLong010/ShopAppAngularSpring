@@ -4,7 +4,14 @@ package com.project.shopapp.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "users")
@@ -13,7 +20,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class User extends BaseEntity{
+public class User extends BaseEntity implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,6 +52,20 @@ public class User extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List <SimpleGrantedAuthority> authoriyList = new ArrayList<>();
+        authoriyList.add(new SimpleGrantedAuthority("ROLE" + getRole().getName()));
+        return authoriyList;
+    }
+
+    @Override
+    public String getUsername() {
+        return phoneNumber;
+    }
+
+    
 
 
 

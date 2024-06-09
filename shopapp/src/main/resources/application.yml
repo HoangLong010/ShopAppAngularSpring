@@ -28,3 +28,6 @@ logging:
     root: ERROR
     org.springframework: ERROR
     com.project.shopapp: ERROR
+jwt:
+  expiration: 2592000 #30 days = 30 * 24 * 60  * 60
+  secretKey: I have a dream
