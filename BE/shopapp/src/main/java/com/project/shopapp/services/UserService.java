@@ -3,6 +3,7 @@ package com.project.shopapp.services;
 import com.project.shopapp.component.JwtTokenUtil;
 import com.project.shopapp.dtos.UserDTO;
 import com.project.shopapp.exceptions.DataNotFoundException;
+import com.project.shopapp.exceptions.PermissionDenyException;
 import com.project.shopapp.models.Role;
 import com.project.shopapp.models.User;
 import com.project.shopapp.repositories.RoleRepository;
@@ -20,19 +21,24 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService implements IUserService {
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
 
     @Override
     // Register User
-    public User createUser(UserDTO userDTO) throws DataNotFoundException {
+    public User createUser(UserDTO userDTO) throws Exception {
         // Kiểm tra xem số điện thoại có tồn tại không
         String phoneNumber = userDTO.getPhoneNumber();
         if (userRepository.existsByPhoneNumber(phoneNumber)) {
             throw new DataIntegrityViolationException("Phone number already exists");
+        }
+        Role role = roleRepository.findById(userDTO.getRoleId())
+                .orElseThrow(() -> new DataNotFoundException("Role not found"));
+        if(role.getName().toUpperCase().equals(Role.ADMIN)){
+            throw new PermissionDenyException("You cannot register a admin account");
         }
         // convert from useDTO => user
         User newUser = User.builder()
@@ -44,9 +50,6 @@ public class UserService implements IUserService {
                 .facebookAccountId(userDTO.getFacebookAccountId())
                 .googleAccountId(userDTO.getGoogleAccountId())
                 .build();
-        Role role = roleRepository.findById(userDTO.getRoleId())
-                .orElseThrow(() -> new DataNotFoundException("Role not found"));
-
         newUser.setRole(role);
 
         // Kiểm tra nếu có accoutId, không yêu cầu password
@@ -74,7 +77,7 @@ public class UserService implements IUserService {
 
         }
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                phoneNumber, password
+                phoneNumber, password, existingUser.getAuthorities()
         );
         // authenticate with JavaSpring security
         authenticationManager.authenticate(authenticationToken);
