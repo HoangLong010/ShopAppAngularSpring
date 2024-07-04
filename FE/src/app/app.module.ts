@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http'; // Đảm bảo đã import HttpClientModule từ đúng module này
 
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './home/home.component';
@@ -10,6 +11,7 @@ import { OrderConfirmComponent } from './order-confirm/order-confirm.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { DetailProductComponent } from './detail-product/detail-product.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,18 +26,11 @@ import { DetailProductComponent } from './detail-product/detail-product.componen
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule // Đảm bảo đã thêm HttpClientModule vào đây
   ],
   providers: [],
-  bootstrap: [
-    // HomeComponent
-    // OrderComponent
-    // OrderConfirmComponent
-    // LoginComponent
-    // RegisterComponent
-    // DetailProductComponent
-
-    RegisterComponent
-  ]
+  bootstrap: [RegisterComponent]
 })
 export class AppModule { }

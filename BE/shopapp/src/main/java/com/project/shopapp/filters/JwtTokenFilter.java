@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.filter.*;
 
 import java.io.IOException;
@@ -37,6 +38,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 //        filterChain.doFilter(request, response);
         try {
+            if(CorsUtils.isPreFlightRequest(request)){
+                response.setStatus(HttpServletResponse.SC_OK);
+            }
             if (isBypassToken(request)){
                 filterChain.doFilter(request, response);
                 return;
