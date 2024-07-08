@@ -1,5 +1,6 @@
 package com.project.shopapp.controllers;
 
+import com.project.shopapp.component.LocalizationUtils;
 import com.project.shopapp.dtos.OrderDetailDTO;
 import com.project.shopapp.exceptions.DataNotFoundException;
 import com.project.shopapp.models.OrderDetail;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 public class OrderDetailController {
 
     private final IOrderDetailService orderDetailService;
+    private final LocalizationUtils localizationUtils;
+
     // Thêm mới 1 orderDetails
     @PostMapping("")
     public ResponseEntity<?> createOrderDetail(

@@ -31,6 +31,6 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule // Đảm bảo đã thêm HttpClientModule vào đây
   ],
   providers: [],
-  bootstrap: [RegisterComponent]
+  bootstrap: [LoginComponent]
 })
 export class AppModule { }

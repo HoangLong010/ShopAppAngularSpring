@@ -1,9 +1,11 @@
 package com.project.shopapp.controllers;
 
+import com.project.shopapp.component.LocalizationUtils;
 import com.project.shopapp.dtos.OrderDTO;
 import com.project.shopapp.models.Order;
 import com.project.shopapp.services.IOrderService;
 
+import com.project.shopapp.utils.MessageKeys;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +22,8 @@ import java.util.List;
 @RequestMapping("/${api.prefix}/orders")
 public class OrderController {
     private final IOrderService orderService;
+    private final LocalizationUtils localizationUtils;
+    private final MessageKeys messageKeys;
     @PostMapping("")
     // POST http://localhost:8080/api/v1/orders
     public ResponseEntity<?> createOrder(
@@ -35,7 +39,7 @@ public class OrderController {
             }
             Order order = orderService.createdOrder(orderDTO);
             return ResponseEntity.ok(order);
-        } catch (Exception e) { 
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -85,7 +89,7 @@ public class OrderController {
     ){
         // xoá mềm => cập nhật trường active = False
         orderService.deleteOrder(id);
-        return ResponseEntity.ok("Order deleted successfully");
+        return ResponseEntity.ok(localizationUtils.getLocalizedMessage(MessageKeys.DELETE_ORDER_SUCCESSFULLY));
     }
 
 

@@ -2,7 +2,9 @@ package com.project.shopapp.controllers;
 
 import com.project.shopapp.dtos.CategoryDTO;
 import com.project.shopapp.models.Category;
+import com.project.shopapp.responses.UpdateCategoryResponse;
 import com.project.shopapp.services.CategoryService;
+import com.project.shopapp.component.LocalizationUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +22,16 @@ import java.util.List;
 public class CategoryController {
 
     private final CategoryService categoryService;
-
+    private final LocalizationUtils localizationUtils;
     @PostMapping("")
     // Nếu tham số truyển vào là 1 object thì sao ?
     public ResponseEntity<?> createCategory(
             @Valid @RequestBody CategoryDTO categoryDTO,
             BindingResult result){
         if(result.hasErrors()){
-            List<String> errorsMessages =result.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList();
+            List<String> errorsMessages =result.getFieldErrors()
+                    .stream()
+                    .map(FieldError::getDefaultMessage).toList();
             return ResponseEntity.badRequest().body(errorsMessages);
         }
 
@@ -46,12 +50,15 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateCategories(
+    public ResponseEntity<UpdateCategoryResponse> updateCategories(
             @PathVariable Long id,
-            @RequestBody CategoryDTO categoryDTO)
+            @RequestBody CategoryDTO categoryDTO
+            )
     {
         categoryService.updateCategory(id, categoryDTO);
-        return ResponseEntity.ok("UpdateCategory successfully");
+        return ResponseEntity.ok(UpdateCategoryResponse.builder()
+                        .message(localizationUtils.getLocalizedMessage("category.update_category.update_successfully"))
+                .build());
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCategories(@PathVariable Long id){
