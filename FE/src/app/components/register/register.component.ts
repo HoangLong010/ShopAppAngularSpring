@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserService } from '../services/user.service';
-import { RegisterDTO } from '../dtos/user/register.dto';
+import { UserService } from '../../services/user.service';
+import { RegisterDTO } from '../../dtos/user/register.dto';
 
 @Component({
   selector: 'app-register',
@@ -50,9 +50,11 @@ export class RegisterComponent {
     };
     this.userService.register(registerDTO).subscribe({
       next: (response: any) => {
+        debugger
         this.router.navigate(['/login']);
       },
       complete :() => {
+        debugger
         alert("Đăng ký thành công")
       },
       error: (error: any) => {

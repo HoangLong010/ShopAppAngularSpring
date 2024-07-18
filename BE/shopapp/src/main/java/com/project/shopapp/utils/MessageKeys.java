@@ -1,5 +1,8 @@
 package com.project.shopapp.utils;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class MessageKeys {
     public static final String LOGIN_SUCCESSFULLY = "user.login.login_successfully";
 
