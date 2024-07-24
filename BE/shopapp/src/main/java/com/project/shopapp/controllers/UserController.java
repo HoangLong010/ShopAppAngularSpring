@@ -48,6 +48,7 @@ public class UserController {
             User user = userService.createUser(userDTO);
             return ResponseEntity.ok(RegisterResponse.builder()
                             .message(localizationUtils.getLocalizedMessage(MessageKeys.REGISTER_SUCCESSFULLY))
+                            .user(user)
                     .build());
         } catch (Exception e){
             return ResponseEntity.badRequest().body(localizationUtils.getLocalizedMessage(MessageKeys.REGISTER_FAILED));
@@ -60,7 +61,11 @@ public class UserController {
     ){
         // Kiểm tra thông tin đăng nhập và sinh token
         try {
-            String token = userService.login(userLoginDTO.getPhoneNumber(), userLoginDTO.getPassword());
+            String token = userService.login(
+                    userLoginDTO.getPhoneNumber(),
+                    userLoginDTO.getPassword(),
+                    userLoginDTO.getRoleId()
+            );
             return ResponseEntity.ok(LoginResponse.builder()
                             .message(localizationUtils.getLocalizedMessage(MessageKeys.LOGIN_SUCCESSFULLY))
                             .token(token)

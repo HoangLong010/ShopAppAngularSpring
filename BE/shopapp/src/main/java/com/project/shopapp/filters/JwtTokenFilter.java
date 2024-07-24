@@ -15,7 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.filter.*;
 
 import java.io.IOException;
@@ -25,7 +24,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
-    @Value("${api.prefix}")
+    @Value("/${api.prefix}")
     private String apiPrefix;
     private final UserDetailsService userDetailsService;
     private final JwtTokenUtils jwtTokenUtil;
@@ -38,9 +37,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 //        filterChain.doFilter(request, response);
         try {
-            if(CorsUtils.isPreFlightRequest(request)){
-                response.setStatus(HttpServletResponse.SC_OK);
-            }
             if (isBypassToken(request)){
                 filterChain.doFilter(request, response);
                 return;
@@ -74,16 +70,16 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         } catch (Exception e){
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
         }
-
     }
-    private boolean isBypassToken(@NonNull HttpServletRequest request){
+    private boolean isBypassToken(@NonNull HttpServletRequest request) {
         final List<Pair<String, String>> bypassTokens = Arrays.asList(
-                Pair.of(String.format("/%s/roles", apiPrefix), "GET"),
-                Pair.of(String.format("/%s/products", apiPrefix), "GET"),
-                Pair.of(String.format("/%s/categories", apiPrefix), "GET"),
-                Pair.of(String.format("/%s/users/register", apiPrefix), "POST"),
-                Pair.of(String.format("/%s/users/login", apiPrefix), "POST")
+                Pair.of(String.format("%s/roles", apiPrefix), "GET"),
+                Pair.of(String.format("%s/categories", apiPrefix), "GET"),
+                Pair.of(String.format("%s/products", apiPrefix), "GET"),
+                Pair.of(String.format("%s/users/register", apiPrefix), "POST"),
+                Pair.of(String.format("%s/users/login", apiPrefix), "POST")
         );
+
         for (Pair<String,String> bypassToken : bypassTokens){
             if(request.getServletPath().contains(bypassToken.getFirst()) &&
                     request.getMethod().equals(bypassToken.getSecond())){

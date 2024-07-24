@@ -18,4 +18,9 @@ public class UserLoginDTO {
 
 
     private String password;
+
+    @JsonProperty("role_id")
+    private Long roleId;
+
+
 }

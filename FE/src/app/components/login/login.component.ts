@@ -57,15 +57,18 @@ export class LoginComponent {
   login() {
     debugger
     const loginDTO: LoginDTO = {
-      "phone_number": this.phoneNumber,
-      "password": this.password,
+      phone_number: this.phoneNumber,
+      password: this.password,
+      role_id: this.selectedRole?.id??1
 
     };
     this.userService.login(loginDTO).subscribe({
       next: (response: LoginResponse) => {
         debugger
         const { token } = response
-        this.tokenService.setToken(token)
+        if(this.rememberMe){
+          this.tokenService.setToken(token);
+        }
 
         // this.router.navigate(['/login']);
       },
@@ -75,7 +78,7 @@ export class LoginComponent {
       },
       error: (error: any) => {
         debugger
-        alert(error)
+        alert(error?.error?.message)
       }
     })
 

@@ -39,6 +39,10 @@ public class CategoryController {
 
         return ResponseEntity.ok("Insert Category Successfully");
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getCategoriesById(@PathVariable Long id){
+        return ResponseEntity.ok(categoryService.getCategory(id));
+    }
     // Hiển thị tất cả các categories
     @GetMapping("")
     public ResponseEntity<List<Category>> getAllCategories(

@@ -38,12 +38,13 @@ public class WebSecurityConfig {
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(requests -> {
                     requests.requestMatchers(
-                            String.format("%s/users/login", apiPrefix),
-                            String.format("%s/users/register", apiPrefix)
+                            String.format("%s/users/register", apiPrefix),
+                            String.format("%s/users/login", apiPrefix)
                     )
                             .permitAll()
+
                             .requestMatchers(GET,
-                                    String.format("%s/categories**", apiPrefix)).hasAnyRole(Role.USER, Role.ADMIN)
+                                    String.format("%s/categories/**", apiPrefix)).permitAll()
                             .requestMatchers(POST,
                                     String.format("%s/categories/**", apiPrefix)).hasAnyRole(Role.ADMIN)
                             .requestMatchers(PUT,
@@ -53,7 +54,7 @@ public class WebSecurityConfig {
 
 
                             .requestMatchers(GET,
-                                    String.format("%s/products**", apiPrefix)).hasAnyRole(Role.USER, Role.ADMIN)
+                                    String.format("%s/products/**", apiPrefix)).permitAll()
                             .requestMatchers(POST,
                                     String.format("%s/products/**", apiPrefix)).hasAnyRole(Role.ADMIN)
                             .requestMatchers(PUT,
@@ -62,9 +63,8 @@ public class WebSecurityConfig {
                                     String.format("%s/products/**", apiPrefix)).hasAnyRole(Role.ADMIN)
 
 
-
                             .requestMatchers(POST,
-                                    String.format("%s/orders/**", apiPrefix)).hasAnyRole(Role.USER)
+                                    String.format("%s/orders/**", apiPrefix)).hasRole(Role.USER)
                             .requestMatchers(GET,
                                     String.format("%s/orders/**", apiPrefix)).hasAnyRole(Role.USER, Role.ADMIN)
                             .requestMatchers(PUT,
@@ -83,7 +83,7 @@ public class WebSecurityConfig {
                                     String.format("%s/order_details/**", apiPrefix)).hasRole(Role.ADMIN)
 
                             .requestMatchers(GET,
-                                    String.format("%s/roles**", apiPrefix)).permitAll()
+                                    String.format("%s/products/images/**", apiPrefix)).hasAnyRole(Role.ADMIN, Role.USER)
 
                             .anyRequest().authenticated();
 
