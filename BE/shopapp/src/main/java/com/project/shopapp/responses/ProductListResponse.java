@@ -7,6 +7,6 @@ import lombok.*;
 @Builder
 public class ProductListResponse {
     private List<ProductResponse> products;
-    private int totalPage;
+    private int totalPages;
 
 }

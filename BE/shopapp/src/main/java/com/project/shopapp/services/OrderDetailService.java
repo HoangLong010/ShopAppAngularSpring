@@ -1,6 +1,7 @@
 package com.project.shopapp.services;
 import java.util.List;
 
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.stereotype.Service;
@@ -78,6 +79,7 @@ public class OrderDetailService implements IOrderDetailService{
 
     // Delete
     @Override
+    @Transactional
     public void deleteById(Long id) {
         orderDetailRepository.deleteById(id);   
     }

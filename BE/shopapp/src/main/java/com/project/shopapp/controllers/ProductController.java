@@ -137,20 +137,30 @@ public class ProductController {
         return contentType != null && contentType.startsWith("image/");
     }
 
+    // Phân trang
     // Lấy danh sách products theo số trang
     @GetMapping("")
-    public ResponseEntity<ProductListResponse> getProducts(@RequestParam("page") int page,
-            @RequestParam("limit") int limit) {
+    public ResponseEntity<ProductListResponse> getProducts(
+            @RequestParam(defaultValue = "") String keyword,
+            @RequestParam(defaultValue = "0", name = "category_id") Long categoryId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int limit)
+    {
         // Tạo Pageable từ thông tin trang giới hạn
-        PageRequest pageRequest = PageRequest.of(page, limit, Sort.by("createdAt").descending());
-        Page<ProductResponse> productPage = productService.getAllProducts(pageRequest);
+        PageRequest pageRequest = PageRequest.of(
+                page,
+                limit,
+//                Sort.by("createdAt").descending()
+                Sort.by("id").ascending()
+        );
+        Page<ProductResponse> productPage = productService.getAllProducts(keyword, categoryId, pageRequest);
 
         // Lấy tổng số trang
         int totalPages = productPage.getTotalPages();
         List<ProductResponse> products = productPage.getContent();
         return ResponseEntity.ok(ProductListResponse.builder()
                 .products(products)
-                .totalPage(totalPages)
+                .totalPages(totalPages)
                 .build());
     }
 

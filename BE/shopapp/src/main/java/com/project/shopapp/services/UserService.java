@@ -10,6 +10,7 @@ import com.project.shopapp.models.User;
 import com.project.shopapp.repositories.RoleRepository;
 import com.project.shopapp.repositories.UserRepository;
 import com.project.shopapp.utils.MessageKeys;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,6 +32,7 @@ public class UserService implements IUserService {
     private final LocalizationUtils localizationUtils;
 
     @Override
+    @Transactional
     // Register User
     public User createUser(UserDTO userDTO) throws Exception {
         // Kiểm tra xem số điện thoại có tồn tại không
