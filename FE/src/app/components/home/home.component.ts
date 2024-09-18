@@ -3,6 +3,7 @@ import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
 import { enviroment } from '../../environments/environment';
 import { Category } from '../../models/category';
+import { CategoryService } from '../../services/categories.service';
 
 @Component({
   selector: 'app-home',
@@ -20,18 +21,19 @@ export class HomeComponent implements OnInit{
   totalPages: number = 0
   visiblePages: number[] = []
   keyword: string = ""
-  idCategory = number
-  nameCategory = string
 
 
 
-  constructor(private productService: ProductService){
+  constructor(
+    private productService: ProductService,
+    private categoryService: CategoryService
+  ){
   
     
   }
   ngOnInit(){
     this.getProducts(this.keyword, this.selectedCategoryId, this.currentPage, this.itemsPerPage)
-    
+    this.getCategories(1,100)
   }
 
 
@@ -42,11 +44,22 @@ export class HomeComponent implements OnInit{
     this.getProducts(this.keyword, this.selectedCategoryId, this.currentPage, this.itemsPerPage);
   } 
 
+  getCategories(page:number, limit:number){
+    this.categoryService.getCategories(page, limit).subscribe({
+      next: (categories: Category[]) => {
+        debugger
+        this.categories = categories;
+      },
+      complete: () => {
+        debugger
+      },
+      error: (error: any) => {
+        console.error('Error fetching categories', error);
+      }
+    })
+  }
 
-  getCategories()
 
-
-  
 
   
   getProducts(keyword: string, selectedCategoryId: number, page: number, limit: number ){

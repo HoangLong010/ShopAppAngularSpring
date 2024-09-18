@@ -1,6 +1,9 @@
 package com.project.shopapp.models;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
+
 @Entity
 @Table(name = "products")
 @Getter
@@ -27,6 +30,9 @@ public class Product extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    private List<ProductImage> productImages;
 
 
 }
