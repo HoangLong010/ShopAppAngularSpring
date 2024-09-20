@@ -6,7 +6,7 @@
 }
 
 .product-image {
-    height: 100%;
+    height: 400px;
     width: 100%;
     object-fit: cover;
 }
@@ -35,7 +35,7 @@
 }
 
 .thumbnail-item.active {
-    border: 2px solid white;
+    border: 2px solid red;
 }
 
 .product-details {

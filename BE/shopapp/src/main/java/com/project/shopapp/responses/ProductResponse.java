@@ -16,6 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class ProductResponse extends BaseEntity {
+    private Long id;
+
     private String name;
 
     private Float price;
@@ -33,6 +35,7 @@ public class ProductResponse extends BaseEntity {
     // Tạo 1 đối tượng ProductResponse từ đối tượng Product
     public static ProductResponse formProduct(Product product){
         ProductResponse productResponse = ProductResponse.builder()
+                .id(product.getId())
             .name(product.getName())
             .price(product.getPrice())
             .description(product.getDescription())

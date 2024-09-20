@@ -50,14 +50,14 @@
             <p>{{product?.description}}</p>
             <p>{{product?.price}}</p>
             <div class="product-actions">
-                <button class="btn btn-primary">Thêm vào giỏ hàng</button>
-                <button class="btn btn-success">Mua ngay</button>
+                <button class="btn btn-primary" (click)="addToCart()">Thêm vào giỏ hàng</button>
+                <button class="btn btn-success" (click)="buyNow()">Mua ngay</button>
             </div>
             <div class="product-quantily">
                 <div class="border-wrapper">
-                    <button class="button-left">-</button>
-                    <input type="text" value="1">
-                    <button class="button-right">+</button>
+                    <button class="button-left" (click)="decreaseQuantily()">-</button>
+                    <input type="text" [value]="quantity">
+                    <button class="button-right" (click)="increaseQuantily()">+</button>
                 </div>
             </div>
         </div>
