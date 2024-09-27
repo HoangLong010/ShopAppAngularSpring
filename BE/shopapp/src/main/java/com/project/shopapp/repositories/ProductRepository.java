@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -23,6 +26,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             @Param("categoryId") Long categoryId,
             @Param("keyword") String keyword, Pageable pageable
     );
+
+//    @Query("SELECT p FROM Product p LEFT JOIN FETCH .productImages WHERE p.id = :productId")
+//    Optional<Product> getDetailProduct(@Param("productId") Long productId);
+
+    @Query("SELECT p FROM Product p WHERE p.id IN :productIds")
+    List<Product> findProductsByIds(@Param("productIds") List<Long> productIds);
+
 
 
 

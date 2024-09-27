@@ -25,7 +25,7 @@ export class DetailProductComponent implements OnInit {
 
   ngOnInit() {
     debugger
-    const idParam = 5;
+    const idParam = 10;
     if (idParam !== null) {
       this.productId = +idParam;
     }
