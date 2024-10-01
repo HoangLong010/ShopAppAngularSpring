@@ -1,19 +1,22 @@
 package com.project.shopapp.services;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.project.shopapp.dtos.CartItemDTO;
+import com.project.shopapp.models.*;
+import com.project.shopapp.repositories.OrderDetailRepository;
+import com.project.shopapp.repositories.ProductRepository;
 import jakarta.transaction.Transactional;
+import org.aspectj.weaver.ast.Or;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.project.shopapp.dtos.OrderDTO;
 import com.project.shopapp.exceptions.DataNotFoundException;
-import com.project.shopapp.models.Order;
-import com.project.shopapp.models.OrderStatus;
-import com.project.shopapp.models.User;
 import com.project.shopapp.repositories.OrderRepository;
 import com.project.shopapp.repositories.UserRepository;
 
@@ -26,12 +29,15 @@ public class OrderService implements IOrderService {
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
     private final ModelMapper modelMapper;
+    private final ProductRepository productRepository;
+    private final OrderDetailRepository orderDetailRepository;
     
     @Override
     public Order createdOrder(OrderDTO orderDTO) throws Exception {
         // Tìm usedId có tồn tại hay không
-        User user = userRepository.findById(orderDTO.getUserId())
-            .orElseThrow(() -> new DataNotFoundException("Cannot find user with id: "+ orderDTO.getUserId()) );
+        User user = userRepository
+                .findById(orderDTO.getUserId())
+                .orElseThrow(() -> new DataNotFoundException("Cannot find user with id: "+ orderDTO.getUserId()) );
         // Tạo một luồng dữ liệu ánh xạ riêng để kiểm soát việc ánh xạ
         modelMapper.typeMap(OrderDTO.class, Order.class)
                 .addMappings(mapper -> mapper.skip(Order::setId));
@@ -50,7 +56,30 @@ public class OrderService implements IOrderService {
         }
         order.setShippingDate(shippingDate);
         order.setActive(true);
+        order.setTotalMoney(orderDTO.getTotalMoney());
         orderRepository.save(order);
+
+        // Tạo danh sách đối tượng OrderDetail từ CartItemDTO
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        for(CartItemDTO cartItemDTO: orderDTO.getCartItems()){
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setOrder(order);
+
+            // Lấy thông tin sẳn phẩm
+            Long productId = cartItemDTO.getProductId();
+            int quantity = cartItemDTO.getQuantity();
+
+            Product product =  productRepository.findById(productId)
+                    .orElseThrow(() -> new DataNotFoundException("Product not found with id: " + productId));
+            orderDetail.setProduct(product);
+            orderDetail.setNumberOfProducts(quantity);
+
+            orderDetail.setPrice(product.getPrice());
+
+            orderDetails.add(orderDetail);
+        }
+
+        orderDetailRepository.saveAll(orderDetails);
         return order;
     }
 

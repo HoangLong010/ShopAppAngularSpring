@@ -39,32 +39,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <div class="product-info">
-                                <img src="https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" 
-                                    alt="" class="product-image">
-                                
-                                <span class="product-name">Tên sản phẩm</span>
-                            </div>
-                        </td>
-                        <td>2</td>
-                        <td>100.000 đ</td>
-                        <td>200.000 đ</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="product-info">
-                                <img src="https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" 
-                                    alt="" class="product-image">
-                                
-                                <span class="product-name">Tên sản phẩm</span>
-                            </div>
-                        </td>
-                        <td>2</td>
-                        <td>100.000 đ</td>
-                        <td>200.000 đ</td>
-                    </tr>
+                    <ng-container *ngFor="let item of cartItems"> 
+                        <tr>
+                            <td class="product-info">
+                                <img [src]="item.product.thumbnail"  alt="Product Image" class="product-image">
+                                <span class="product-name">{{ item.product.name}}</span>
+                            </td>
+                            <td>{{item.quantity}}</td>
+                            <td>{{item.product.price | currency: 'VND':'symbol':'1.0-0'}}</td>
+                            <td>{{(item.product.price * item.quantity) | currency: 'VND':'symbol':'1.0-0'}}</td>
+                        </tr>
+    
+                    </ng-container>         
+                    
                 </tbody>
             </table>
             <div class="text-start mt-3">
