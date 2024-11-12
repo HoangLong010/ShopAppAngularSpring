@@ -1,3 +1,5 @@
+@import '../../styles/shared-styles.scss';
+
 .intro-section {
     text-align: center;
     color: white;
@@ -75,4 +77,9 @@
 
 .space-x {
     margin: 0 5px;
+}
+
+.btn-primary {
+    background-color: $shopapp-color;
+    border-color: $shopapp-color;
 }

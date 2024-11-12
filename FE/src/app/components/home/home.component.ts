@@ -4,6 +4,7 @@ import { ProductService } from '../../services/product.service';
 import { enviroment } from '../../environments/environment';
 import { Category } from '../../models/category';
 import { CategoryService } from '../../services/categories.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +27,8 @@ export class HomeComponent implements OnInit{
 
   constructor(
     private productService: ProductService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private router: Router
   ){
   
     
@@ -107,6 +109,11 @@ export class HomeComponent implements OnInit{
     }
 
     return new Array(endPage - startPage + 1).fill(0).map((_, index) => startPage + index)
+  }
+
+  onProductClick(productId: number){
+    debugger
+    this.router.navigate(['/product', productId])
   }
 
 

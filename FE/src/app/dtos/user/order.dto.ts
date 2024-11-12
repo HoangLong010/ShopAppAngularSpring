@@ -8,6 +8,7 @@ import {
     IsNumber,
     IsArray
 } from 'class-validator'
+import { CartItem } from '../../models/cart.item';
 
 
 export class OrderDTO {
@@ -43,12 +44,12 @@ export class OrderDTO {
     coupon_code: string;
 
     @IsArray()
-    cart_items: [];
+    cart_items: CartItem[];
 
     constructor(data: any){
         this.user_id = data.user_id
         this.fullname = data.fullname
-        this.email = data.emai
+        this.email = data.email
         this.phone_number = data.phone_number
         this.address = data.address
         this.note = data.note

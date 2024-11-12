@@ -43,6 +43,7 @@ public class ProductController {
     private final IProductService productService;
     private final LocalizationUtils localizationUtils;
 
+
     // Tạo sản phẩm 
     @PostMapping("")
     public ResponseEntity<?> createProduct(
@@ -109,6 +110,7 @@ public class ProductController {
         }
 
     }
+
 
     // Nơi lưu file ảnh
     private String storeFile(MultipartFile file) throws IOException {
@@ -216,6 +218,7 @@ public class ProductController {
         }
     }
 
+    @PostMapping("/generateFakeProducts")
     private ResponseEntity<String> generateFakeProducts() {
         Faker faker = new Faker();
         for (int i = 0; i < 1000000; i++) {

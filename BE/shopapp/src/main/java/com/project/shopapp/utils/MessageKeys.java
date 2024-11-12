@@ -12,6 +12,8 @@ public class MessageKeys {
 
     public static final String LOGIN_FAILED = "user.login.login_failed";
 
+    public static final String USER_IS_LOCKED = "user_is_locked";
+
     public static final String PASSWORD_NOT_MATCH = "user.register.password_not_match";
 
     public static final String CREATE_CATEGORY_SUCCESSFULLY = "category.create_category.create_successfully";
